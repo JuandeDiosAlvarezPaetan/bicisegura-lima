@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org; connect-src 'self'; object-src 'none'; base-uri 'self'">
+  <title>BiciSegura Lima</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>BiciSegura Lima</h1>
+    <p>Rutas, zonas de riesgo y estacionamientos seguros para ciclistas</p>
+  </header>
+
+  <main>
+    <aside>
+      <section>
+        <h2>Capas del mapa</h2>
+        <label><input type="checkbox" id="capa-ciclovias" checked> Ciclovías por estado</label>
+        <label><input type="checkbox" id="capa-incidentes" checked> Incidentes reportados</label>
+        <label><input type="checkbox" id="capa-estacionamientos" checked> Estacionamientos</label>
+        <ul class="leyenda">
+          <li><span class="linea bueno"></span> Buen estado</li>
+          <li><span class="linea regular"></span> Regular</li>
+          <li><span class="linea malo"></span> Mal estado</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Reportar incidente</h2>
+        <p class="ayuda">1. Haz clic en el mapa para marcar el lugar.</p>
+        <form id="form-reporte" novalidate>
+          <label for="tipo">Tipo</label>
+          <select id="tipo" required>
+            <option value="robo">Robo</option>
+            <option value="accidente">Accidente</option>
+            <option value="via_invadida">Vía invadida</option>
+            <option value="mal_estado">Mal estado</option>
+          </select>
+          <label for="descripcion">Descripción (máx. 280)</label>
+          <textarea id="descripcion" maxlength="280" rows="3"></textarea>
+          <button type="submit">Enviar reporte</button>
+        </form>
+        <p id="mensaje" role="status"></p>
+      </section>
+
+      <section>
+        <h2>Estacionamientos cercanos</h2>
+        <p class="ayuda">Marca tu destino en el mapa y busca a menos de 500 m.</p>
+        <button id="buscar-estacionamientos" type="button">Buscar</button>
+        <ul id="lista-estacionamientos"></ul>
+      </section>
+    </aside>
+
+    <div id="mapa" aria-label="Mapa de Lima"></div>
+  </main>
+
+  <footer>Demo académica · Datos simulados · Mapa © OpenStreetMap</footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="utils.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

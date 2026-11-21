@@ -1,0 +1,86 @@
+name: CI-CD BiciSegura
+
+on:
+  push:
+    branches: [main, test]
+  pull_request:
+    branches: [main, test]
+
+permissions:
+  contents: read
+
+jobs:
+  # Etapa 1 y 2: build + pruebas
+  build-test:
+    name: Build y pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Instalar dependencias (lockfile)
+        run: npm ci
+      - name: Lint (incluye reglas de seguridad)
+        run: npm run lint
+      - name: Pruebas unitarias con cobertura
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Guardar reporte de cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
+      - name: Guardar sitio para el despliegue
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+
+  # Etapa 3: análisis de seguridad
+  security:
+    name: Seguridad (secretos, dependencias, SAST)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Escaneo de secretos (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Análisis de dependencias (npm audit)
+        run: |
+          npm ci
+          npm audit --audit-level=high
+      - name: SAST - iniciar CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+      - name: SAST - analizar con CodeQL
+        uses: github/codeql-action/analyze@v3
+
+  # Etapa 4: despliegue (solo en push a main y si todo lo anterior pasó)
+  deploy:
+    name: Despliegue en GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build-test, security]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,45 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1d2a24;
+  background: #f4f7f5;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+header { background: #14532d; color: #fff; padding: 12px 20px; }
+header h1 { margin: 0; font-size: 1.4rem; }
+header p { margin: 4px 0 0; opacity: .85; font-size: .9rem; }
+main { flex: 1; display: flex; min-height: 0; }
+aside {
+  width: 320px;
+  padding: 16px;
+  overflow-y: auto;
+  background: #fff;
+  border-right: 1px solid #dde5df;
+}
+aside section { margin-bottom: 22px; }
+aside h2 { font-size: 1rem; margin: 0 0 8px; color: #14532d; }
+aside label { display: block; margin: 6px 0 4px; font-size: .9rem; }
+select, textarea, button { width: 100%; font: inherit; padding: 8px; border-radius: 6px; border: 1px solid #b8c7bd; }
+button { background: #16a34a; color: #fff; border: none; cursor: pointer; margin-top: 8px; font-weight: 600; }
+button:hover { background: #15803d; }
+.ayuda { font-size: .82rem; color: #5b6b61; margin: 0 0 6px; }
+#mensaje { font-size: .85rem; min-height: 1.2em; }
+#mensaje.ok { color: #15803d; }
+#mensaje.error { color: #b91c1c; }
+.leyenda { list-style: none; padding: 0; font-size: .85rem; }
+.leyenda li { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.linea { display: inline-block; width: 28px; height: 4px; border-radius: 2px; }
+.linea.bueno { background: #16a34a; }
+.linea.regular { background: #f59e0b; }
+.linea.malo { background: #dc2626; }
+#lista-estacionamientos { padding-left: 18px; font-size: .88rem; }
+#mapa { flex: 1; min-height: 420px; }
+footer { font-size: .75rem; text-align: center; padding: 6px; color: #5b6b61; }
+@media (max-width: 760px) {
+  main { flex-direction: column; }
+  aside { width: 100%; border-right: none; }
+  #mapa { min-height: 60vh; }
+}
