@@ -1,5 +1,5 @@
 # BiciSegura Lima
-
+Proyecto de Computacion
 Frontend web que muestra a los ciclistas de Lima las ciclovías según su estado, las zonas de riesgo reportadas por la comunidad y los estacionamientos seguros cercanos. Demo académica con datos simulados.
 
 - **Solución desplegada:** https://TU-USUARIO.github.io/bicisegura-lima/
