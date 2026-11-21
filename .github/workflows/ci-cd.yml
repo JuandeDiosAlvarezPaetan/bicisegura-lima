@@ -34,7 +34,7 @@ jobs:
           name: coverage
           path: coverage/
       - name: Guardar sitio para el despliegue
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist/
 
